@@ -52,7 +52,7 @@ axtToMaf out.axt target.sizes query.sizes out.maf
     
 Works with linuxbrew or OSX
 
-If you can get your whole genome aligner to output MAF, then you can to the postprocessing of chaining and netting. Note that delta2maf from mummer/nucmer is re-hosted in this repository for convenience, it runs on linux systems only
+If you can get your whole genome aligner to output MAF, then you can do the post-processing steps. Note that delta2maf from mummer/nucmer is re-hosted in this repository for convenience, it runs on linux systems only. delta2maf is copyright of the original developers for Mugsy/Mummer and destributed unmodified under the Artistic License 2.0
 
 ## References
 
