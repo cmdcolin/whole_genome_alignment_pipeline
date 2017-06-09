@@ -9,7 +9,7 @@ Some guidelines for whole genome alignments
 ### LAST
 
     lastdb mydb target.fa
-    lastal mydb query.fa --maf > output.maf
+    lastal mydb query.fa -f maf > output.maf
 
 ### LASTZ
 
