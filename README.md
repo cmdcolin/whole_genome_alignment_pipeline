@@ -41,7 +41,15 @@ If you have a RepeatMasker.gff, you can softmask (replace repeats with lower cas
 
 ## Post-processing
 
-Eventually the netToAxt command requires 2bit format files and many steps require the "chrom.sizes" type file (two columns sequence name and length)
+You can post process your alignments to find a syntenic net using UCSC tools
+
+See mailing list/wiki threads about syntenic nets [1](https://groups.google.com/a/soe.ucsc.edu/forum/#!msg/genome/C7Wxn01IzQk/wHpOkr9mWAoJ) and [2](http://genomewiki.ucsc.edu/index.php/HowTo:_Syntenic_Net_or_Reciprocal_Best)
+
+
+### Prepare files for UCSC tools
+
+
+The netToAxt command requires 2bit format files and many steps require the "chrom.sizes" type file (two columns sequence name and length)
 
 ```
 samtools faidx query.fa
@@ -52,32 +60,77 @@ faToTwoBit query.fa query.2bit
 faToTwoBit target.fa target.2bit
 ```
 
-### Chaining and netting
+### Chaining, filtering, and netting
+
+
+To get familiar with chains, nets, etc see http://cs173.stanford.edu/presentations/lecture12.pptx
+
+Quoted below
+
+#### What are chains?
+
+- "Chains join together related local alignments" or more elaborately "a chain is a sequence of gapless aligned blocks, where there must be no overlaps of blocks' target or query coords within the chain."
+
+- Before and after chaining BLASTZ raw outputs average 608 bp, after chaining 23 kb (big increase)
+
+#### What are nets?
+
+- "Commonly multiple mouse alignments can be found for a particular human region, particularly for coding regions -- Net finds best match <query> match for each <target> region."
+
+- "A net is a hierarchical collection of chains, with the highest-scoring non-overlapping chains on top, and their gaps filled in where possible by lower-scoring chains, for several levels."
+
+- "A net is single-coverage for target but not for query."
+
+
+#### Procedure
 
 As mentioned before, if your whole genome alignment can get into MAF format (or directly output PSL), you can run these steps fairly easily
 
+Convert original genome alignment (maybe in MAF format from above) into psl, uses LAST package maf-convert
+
 ```
 maf-convert psl output.maf > last.psl
+```
+
+Run UCSC pipeline
+
+```
 axtChain -linearGap=loose -psl last.psl -faQ -faT target.fa query.fa out.pre.chain
+netFilter -syn hg38.oviAri3.net.gz | gzip -c > hg38.oviAri3.syn.net.gz
+
 chainPreNet out.pre.chain target.sizes query.sizes out.chain
 chainNet out.chain target.sizes query.sizes target.net query.net
-netToAxt target.net out.chain target.2bit query.2bit out.axt
-axtToMaf out.axt target.sizes query.sizes out.maf
+netFilter -syn target.net > target.syn.net
+netToAxt target.syn.net out.chain target.2bit query.2bit stdout | axtSort stdin stdout | axtToMaf -tPrefix=target. -qPrefix=query. stdin target.sizes query.sizes stdout | gzip > out.maf
 ```
 
 ## Pre-requisites
 
-    brew install blat kent-tools samtools last lastz mummer
-    
+```
+brew install blat kent-tools samtools last lastz mummer
+```
+
+
 Works with linuxbrew or OSX
 
-If you can get your whole genome aligner to output MAF, then you can do the post-processing steps. Note that delta2maf from mummer/nucmer is re-hosted in this repository for convenience, it runs on linux systems only. delta2maf is copyright of the original developers for Mugsy/Mummer and destributed unmodified under the Artistic License 2.0
+If you can get your whole genome aligner to output MAF, then you can do the post-processing steps.
+
+## delta2maf
+
+The delta2maf package from MUMmer/Mugsy and is re-hosted in this repository in `utils/delta2maf` for convenience because it is no longer packaged in many other places
+
+The `delta2maf` program is a binary that runs on linux systems only.
+
+The delta2maf program is copyright of the original developers for Mugsy/Mummer and is distributed here unmodified under the Artistic License 2.0
 
 ## References
 
-Inspired by http://rstudio-pubs-static.s3.amazonaws.com/183476_e0f3e8b454434690a45aff9dff48fdfb.html#last-aligner
-
-Simplifies all the complicated steps listed here http://genomewiki.ucsc.edu/index.php/Whole_genome_alignment_howto
+- http://rstudio-pubs-static.s3.amazonaws.com/183476_e0f3e8b454434690a45aff9dff48fdfb.html#last-aligner
+- http://genomewiki.ucsc.edu/index.php/Whole_genome_alignment_howto
+- http://cs173.stanford.edu/presentations/lecture12.pptx
+- http://last.cbrc.jp/doc/last-seeds.html
+- https://groups.google.com/a/soe.ucsc.edu/forum/#!msg/genome/C7Wxn01IzQk/wHpOkr9mWAoJ
+- http://genomewiki.ucsc.edu/index.php/HowTo:_Syntenic_Net_or_Reciprocal_Best
 
 ## Notes
 
