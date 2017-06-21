@@ -131,6 +131,8 @@ The delta2maf program is copyright of the original developers for Mugsy/Mummer a
 - http://last.cbrc.jp/doc/last-seeds.html
 - https://groups.google.com/a/soe.ucsc.edu/forum/#!msg/genome/C7Wxn01IzQk/wHpOkr9mWAoJ
 - http://genomewiki.ucsc.edu/index.php/HowTo:_Syntenic_Net_or_Reciprocal_Best
+- http://shiulab.plantbiology.msu.edu/index.php?title=SyntenicBlocks
+
 
 ## Notes
 
