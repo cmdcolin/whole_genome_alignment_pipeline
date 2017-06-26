@@ -4,11 +4,19 @@
 Some guidelines for whole genome alignments
 
 
-## Masking
+## RepeatMasking
 
-If you have a RepeatMasker.gff, you can softmask (replace repeats with lower case in FASTA) with bedtools
+Repeat masking can be really important for whole genome alignments.
+
+If you have a `RepeatMasker` gff file, you can softmask your genome (e.g. replace repeat regions with lower case ACGT) with `bedtools`
 
     bedtools maskfasta -soft -fi genome.fa -bed repeastmasker.gff -fo genome_softmask.fa
+    
+If you have a `RepeatMasker` .rm.out file e.g. from NCBI Genomes FTP, you can use `BEDOPS`
+
+    convert2bed -i rmsk < repeatmasker.rm.out > repeatmasker.bed
+    
+And then run `bedtools maskfasta` again
     
 
 ## Whole genome alignments
