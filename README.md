@@ -22,7 +22,7 @@ If you have a `RepeatMasker` .rm.out file e.g. from NCBI Genomes FTP, you can us
 ### LAST
 
     lastdb mydb target.fa
-    lastal mydb query.fa -f maf > output.maf
+    lastal mydb query.fa -f maf | gzip > output.maf.gz
 
 
 #### Notes
@@ -32,7 +32,7 @@ If you have a `RepeatMasker` .rm.out file e.g. from NCBI Genomes FTP, you can us
 
 ### LASTZ
 
-    lastz "target.fa[multiple]" "query.fa[multiple]" --format=maf > output.maf
+    lastz "target.fa[multiple]" "query.fa[multiple]" --format=maf | gzip > output.maf.gz
 
 #### Notes
 
@@ -43,7 +43,7 @@ If you have a `RepeatMasker` .rm.out file e.g. from NCBI Genomes FTP, you can us
 ### MUMMER
 
     nucmer -p output target.fa query.fa
-    delta2maf output.delta > out.maf
+    delta2maf output.delta | gzip > out.maf.gz
 
 ## Post-processing
 
@@ -92,19 +92,21 @@ As mentioned before, if your whole genome alignment can get into MAF format (or 
 Convert original genome alignment (maybe in MAF format from above) into psl, uses LAST package maf-convert
 
 ```
-maf-convert psl output.maf > last.psl
+gunzip -c output.maf.gz | maf-convert psl | gzip > last.psl.gz
 ```
 
 Run UCSC pipeline
 
 ```
-axtChain -linearGap=loose -psl last.psl -faQ -faT target.fa query.fa out.pre.chain
-netFilter -syn hg38.oviAri3.net.gz | gzip -c > hg38.oviAri3.syn.net.gz
-
+gunzip -c last.psl.gz | axtChain -linearGap=loose -psl stdin target.2bit query.2bit out.pre.chain
 chainPreNet out.pre.chain target.sizes query.sizes out.chain
 chainNet out.chain target.sizes query.sizes target.net query.net
-netFilter -syn target.net > target.syn.net
-netToAxt target.syn.net out.chain target.2bit query.2bit stdout | axtSort stdin stdout | axtToMaf -tPrefix=target. -qPrefix=query. stdin target.sizes query.sizes stdout | gzip > out.maf
+netSyntenic target.net target.syn.net
+netFilter -syn target.syn.net > target.syn.filter.net
+netToAxt target.syn.filter.net out.chain target.2bit query.2bit stdout |\
+    axtSort stdin stdout |\
+    axtToMaf -tPrefix=target. -qPrefix=query. stdin target.sizes query.sizes stdout |\
+    gzip > out.maf.gz
 ```
 
 ## Pre-requisites
