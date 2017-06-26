@@ -150,10 +150,17 @@ This is a work in progress and experimental
 ### Aligning two draft vertebrate genomes
 
 * Initial output `LAST aligner, -uMAM4`: 767,262 alignments  
-* After running `axtChain -linearGap=loose`: 368,085 alignments
+* After running UCSC chaining/netting/maffing: 368,085 alignments
 
 ![](image/chaining.png)
 
 Figure. Screenshot of small part of draft genome alignment. For reference, image created with last-dotplot with maf files from before and after chaining as input, -x 10000 -y 10000 and the calculated bases per pixel was approx 120,000
+
+
+### Aligning mouse chr1 vs human chr1
+
+* Initial output with `lastdb -c -uMAM4`: 458,503 alignments  
+* After running UCSC chaining/netting/maffing: 34,451 alignments
+
 
 
