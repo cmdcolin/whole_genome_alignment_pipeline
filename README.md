@@ -58,10 +58,8 @@ See mailing list/wiki threads about syntenic nets [1](https://groups.google.com/
 The netToAxt command requires 2bit format files and many steps require the "chrom.sizes" type file (two columns sequence name and length)
 
 ```
-samtools faidx query.fa
-samtools faidx target.fa
-cut -f1,2 query.fa.fai > query.sizes
-cut -f1,2 target.fa.fai > target.sizes
+faSize -detailed query.fa > query.sizes
+faSize -detailed target.fa > target.sizes
 faToTwoBit query.fa query.2bit
 faToTwoBit target.fa target.2bit
 ```
@@ -69,9 +67,8 @@ faToTwoBit target.fa target.2bit
 ### Chaining, filtering, and netting
 
 
-To get familiar with chains, nets, etc see http://cs173.stanford.edu/presentations/lecture12.pptx
+To get familiar with chains, nets, etc see http://cs173.stanford.edu/presentations/lecture12.pptx which I summarize below
 
-Quoted below
 
 #### What are chains?
 
