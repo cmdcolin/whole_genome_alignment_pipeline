@@ -34,8 +34,8 @@ Also, not used in this guide, but to create a RepeatMasked BLAST database from a
 
 #### Notes
 
-* LAST claims to be able to handle repeats very flexibly and does not even require repeatmasking by some benchmarks
-* LAST allows multiple seeding schemes to be used. The lastdb -uMAM8 has 8 seeding patterns and requires high memory, -uMAM4 has 4 and requires less memory for example. -uNEAR is recommended for short-and-exact matches. See http://last.cbrc.jp/doc/last-seeds.html
+* LAST claims to be able to handle repeats very flexibly and does not even require repeatmasking by some benchmarks, however if you have a RepeatMasked genome (lower case masking) then use `lastdb -c yourdb yourfile.fa` to use it.
+* LAST allows multiple seeding schemes to be used. You can use lastdb -uMAM8 which has 8 seeding patterns and requires high memory, -uMAM4 has 4 seeding patterns and requires less memory for example. -uNEAR is recommended for short-and-exact matches. See http://last.cbrc.jp/doc/last-seeds.html
 
 ### LASTZ
 
