@@ -116,6 +116,22 @@ netToAxt target.syn.filter.net out.chain target.2bit query.2bit stdout |\
     gzip > out.maf.gz
 ```
 
+
+You can also skip the netSyntenic filter
+
+```
+gunzip -c last.psl.gz | axtChain -linearGap=loose -psl stdin target.2bit query.2bit out.pre.chain
+chainPreNet out.pre.chain target.sizes query.sizes out.chain
+chainNet out.chain target.sizes query.sizes target.net query.net
+netToAxt target.net out.chain target.2bit query.2bit stdout |\
+    axtSort stdin stdout |\
+    axtToMaf -tPrefix=target. -qPrefix=query. stdin target.sizes query.sizes stdout |\
+    gzip > out.maf.gz
+``
+
+Note that tPrefix and qPrefix are useful as they provide an automatic prefix to chromosome/scaffold names in your outputted MAF so change them from target. and query. to the names of your organisms
+
+
 ## Pre-requisites
 
 ```
@@ -156,8 +172,8 @@ This is a work in progress and experimental
 
 ### Aligning two draft vertebrate genomes
 
-* Initial output `LAST aligner, -uMAM4`: 767,262 alignments  
-* After running UCSC chaining/netting/maffing: 368,085 alignments
+* Initial output with `lastdb -c -uMAM4`: 904,703 alignments  
+* After running UCSC chaining/netting/maffing: 310,309 alignments
 
 ![](image/chaining.png)
 
