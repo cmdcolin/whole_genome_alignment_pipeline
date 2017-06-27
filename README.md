@@ -16,6 +16,13 @@ If you have a `RepeatMasker` .rm.out file e.g. from NCBI Genomes FTP, you can us
 
     rmsk2bed < repeatmasker.rm.out | cut -f1,2,3 > repeats.bed
     
+Also, not used in this guide, but to create a RepeatMasked BLAST database from a FASTA file with lower-case RepeatMasking, use this
+
+
+    convert2blastmask -in target.fa -parse_seqids -masking_algorithm repeat -masking_options "repeatmasker, default" -outfmt maskinfo_asn1_bin -out supercontigs_softmask.mask.asnb
+    makeblastdb -in target.fa -dbtype nucl -parse_seqids -mask_data supercontigs_softmask.mask.asnb
+
+
 
 ## Whole genome alignments
 
