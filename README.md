@@ -127,7 +127,7 @@ netToAxt target.net out.chain target.2bit query.2bit stdout |\
     axtSort stdin stdout |\
     axtToMaf -tPrefix=target. -qPrefix=query. stdin target.sizes query.sizes stdout |\
     gzip > out.maf.gz
-``
+```
 
 Note that tPrefix and qPrefix are useful as they provide an automatic prefix to chromosome/scaffold names in your outputted MAF so change them from target. and query. to the names of your organisms
 
