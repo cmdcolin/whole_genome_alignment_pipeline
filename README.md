@@ -173,7 +173,8 @@ This is a work in progress and experimental
 ### Aligning two draft vertebrate genomes
 
 * Initial output with `lastdb -c -uMAM4`: 904,703 alignments  
-* After running UCSC chaining/netting/maffing: 310,309 alignments
+* After running UCSC chaining/netting/maffing: 398,590 alignments
+* After running previous + synteny filter: 310,309 alignments
 
 ![](image/chaining.png)
 
